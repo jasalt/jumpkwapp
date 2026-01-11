@@ -1,3 +1,15 @@
+/*
+Program flow:
+  1. Parse CLI flags to build window filter criteria and behavior switches.
+  2. Fill a KWin JavaScript template (stored in kwin_script_template.js via go:embed) with those settings.
+  3. Write the rendered script to a temporary file and load it through KWin’s D-Bus scripting API.
+  4. When a launch command is provided, export a small D-Bus listener (ShouldLaunch) that the KWin script calls back into.
+  5. Run the KWin script; it activates or cycles matching windows, or signals that no window matched.
+  6. Stop the script, launch the fallback command if requested, and clean up temporary resources.
+
+This mirrors the behavior of the original Python version but uses github.com/godbus/dbus/v5 for D-Bus access
+and Go’s standard tooling for distribution.
+*/
 package main
 
 import (
