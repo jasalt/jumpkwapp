@@ -25,9 +25,9 @@ Clone the repository and run/build:
 
 ```bash
 go mod tidy          # fetch dependencies (godbus/dbus)
-go run ./main.go -f firefox -c "firefox" -t --current-desktop  # run without building
-go build ./main.go   # build
-./main -f firefox -c "firefox" -t --current-desktop  # run
+go run ./jumpkwapp.go -f firefox -c "firefox" -t --current-desktop  # run without building
+go build ./jumpkwapp.go   # build
+./jumpkwapp -f firefox -c firefox -t --current-desktop  # run
 ```
 
 ## Usage
