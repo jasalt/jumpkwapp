@@ -1,6 +1,8 @@
 # jumpkwapp
 
-Run or raise utility for KDE Plasma 6 on Wayland.
+Run or raise utility for KDE Plasma 6 on Wayland written in Python 3, using Debian package manager dependencies (D-Bus library).
+
+Alternatively there's an experimental Golang version with binary release available at [Codeberg](https://codeberg.org/jasalt/jumpkwapp-go) or [Github](https://github.com/jasalt/jumpkwapp-go) which may be easier to install in certain situations.
 
 Initially forked from [ww-run-or-raise](https://github.com/academo/ww-run-raise) with modifications to add more features from X11 [jumpapp](https://github.com/mkropat/jumpapp). Also got some inspiration from [kdotools](https://github.com/jinliu/kdotool) for the DBus communication part.
 
