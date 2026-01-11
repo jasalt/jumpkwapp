@@ -1,55 +1,58 @@
 # jumpkwapp
 
-Run or raise utility for KDE Plasma 6 on Wayland.
+Run-or-raise utility for KDE Plasma 6 / Wayland, written in Go.
 
-Initially forked from [ww-run-or-raise](https://github.com/academo/ww-run-raise) with modifications to add more features from X11 [jumpapp](https://github.com/mkropat/jumpapp). Also got some inspiration from [kdotools](https://github.com/jinliu/kdotool) for the DBus communication part.
+Originally inspired by [ww-run-or-raise](https://github.com/academo/ww-run-raise) and classic X11 [jumpapp](https://github.com/mkropat/jumpapp), this tool raises an existing window that matches your filters (class, regex, caption, desktop) or launches a command when no match is found. D-Bus messaging is handled with [`github.com/godbus/dbus`](https://github.com/godbus/dbus).
 
-Might also work on X11 as is and with minor modifications on Plasma 5.
+Might also work on Plasma 5 / X11 with minimal adjustments.
 
 ## Features
 
-- Filter windows by exact class, class regex, or caption match.
-- Can restrict matches to the current virtual desktop.
-- Optional toggle mode to minimize if the active window already matches.
-- Optionally runs a command when no matching window exists.
+- Filter windows by exact class, class regex, or caption (case-insensitive regex).
+- Restrict matches to the current virtual desktop.
+- Optional toggle mode minimizes a window if it is already active.
+- Optional command launches when no matching window exists.
+- Automatically embeds and renders the KWin JavaScript activation logic at runtime.
+
+## Requirements
+
+- Go 1.20 or newer.
+- KDE Plasma 6 with KWin’s D-Bus scripting interface available.
 
 ## Installation
 
-Using Python 3.13 and D-Bus modules installable from Debian 13 package manager.
+Clone the repository and run/build:
 
 ```bash
-sudo apt install python3-gi python3-dbus
-cp jumpkwapp /usr/local/bin  # or any directory in $PATH
+go mod tidy          # fetch dependencies (godbus/dbus)
+go run ./main.go -f firefox -c "firefox" -t --current-desktop  # run without building
+go build ./main.go   # build
+./main -f firefox -c "firefox" -t --current-desktop  # run
 ```
-
-Similar packages are probably available in other distros but might be named differently.
 
 ## Usage
 
 ```
 jumpkwapp [options]
 
--f, --filter             Match window class (exact)
--fa, --filter-alternative  Match window caption (regex, case-insensitive)
--fr, --filter-regex      Match window class (regex)
--d, --current-desktop    Only consider windows on the current desktop
--t, --toggle             Minimize the window if it is already active
--c, --command CMD        Launch CMD if no window matches
+-f,  --filter               Match window class (exact)
+-fa, --filter-alternative   Match window caption (regex, case-insensitive)
+-fr, --filter-regex         Match window class (regex)
+-d,  --current-desktop      Only consider windows on the current desktop
+-t,  --toggle               Minimize the window if it is already active
+-c,  --command CMD          Launch CMD if no window matches
 ```
 
 ### Examples
 
-- Raise an existing LibreWolf window in current virtual desktop or start it if missing:
-```
+Raise an existing LibreWolf window on the current desktop or launch it if missing:
+
+```bash
 jumpkwapp -f librewolf -c librewolf --current-desktop
 ```
 
-Setup the hotkey in KDE's Shortcut settings panel.
+Bind the command to a global shortcut via KDE System Settings → Shortcuts.
 
 ## Development
 
-See `DEBUGGING.md` for tips on inspecting KWin state.
-
-# License
-
-MIT licensed but the original `ww` Bash script which remains in repo history didn't have a license defined at the time.
+- See `DEBUGGING.md` for tips on querying KWin state.
